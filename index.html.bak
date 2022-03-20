@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Bảng điểm</title>
+	<meta charset="UTF-8">
+	<meta name="description" connamet="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+  let i = 1;
+  $("#submit").click(function(){ //Hàm gửi giá trị lên bảng
+    let check = $("#name").val().length;
+	if( check != 0){
+    $("tr").last().after("<tr/>");
+    $("tr").last().append("<td>" + i +"</td>");
+    $("tr").last().append("<td>" + $("#name").val() +"</td>");
+	$("tr").last().append("<td>" + $("#math").val() +"</td>");
+	$("tr").last().append("<td>" + $("#physical").val() +"</td>");
+	$("tr").last().append("<td>" + $("#chemistry").val() +"</td>");
+	$("tr").last().append("<td> ? </td>");
+	i++;
+	$("#name").val("");
+	$("#math").val("");
+	$("#physical").val("");
+	$("#chemistry").val("");
+	}
+  });
+  
+  $("#tb").click(function(){ // Hàm tính điểm trung bình
+    $("tr").each(function(){
+      let x = Number($(this).children("td:eq(2)").text());
+      let y = Number($(this).children("td:eq(3)").text());
+      let z = Number($(this).children("td:eq(4)").text());
+      let a = ((x + y + z)/3).toFixed(1) ;
+      $(this).children("td:eq(5)").text(a);
+	});
+  });
+  
+  $("#good").click(function(){  // Hàm tìm học sinh giỏi
+    $("tr").each(function(){
+     let b = Number($(this).children("td:eq(5)").text());
+     if ( b >=8.0 ){
+      $(this).addClass("red");
+	 }
+    });
+  });
+  
+  $("#remov").click(function(){ // Hàm xóa dòng
+    let d = Number($("#del").val());
+	if( d != 0 && d < $("tr").length){
+      $("tr").eq(d).remove();
+	  i--;
+	  $("#del").val("");
+	  $("tr").each(function(){  // vòng lặp cập nhật lại số thứ tự
+	    $(this).children("td:eq(0)").text($(this).index());
+	  });
+	}
+  });
+});
+
+</script>
+<style>
+body{
+background-color: #6897ab;
+}
+table{
+width: 80%;
+border : 1px solid black;
+border-collapse : collapse;
+position: relative;
+left: 10%;
+}
+th,tr, td{
+height: 20px;
+border : 1px solid black;
+border-collapse : collapse;
+text-align: center;
+}
+th{
+width: 16.25%;
+}
+.stt{
+width: 5%;
+}
+.ten{
+width: 30%;
+}
+form{
+margin: auto;
+}
+#ten, #toan, #ly, #hoa{
+display: block;
+margin-top:5px;
+}
+#submit{
+margin-left: 28%;
+margin-top: 20px;;
+}
+fieldset{
+width: 20px;
+margin: auto;
+}
+.button{
+width: 300px;
+margin: auto;
+}
+.but{
+padding-left: 50px;
+}
+.red{
+color: red;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+<form name="data">
+  <fieldset>
+    <legend align="center" >Class Marksheet</legend>
+    <label for="ten">Họ tên<input type="text" name="name" value="" id="name" /></label><br>
+    <label for="toan">Điểm toán<input type="text" name="math" value="" id="math"  /></label><br>
+    <label for="ly">Điểm lý<input type="text" name="physical" value="" id="physical"  /></label><br>
+    <label for="hoa">Điểm hóa<input type="text" name="chemistry" value="" id="chemistry" /></label><br>
+    <input type="button" id="submit"  value="Nhập" />
+  </fieldset>
+</form>
+<br>
+<table id="myTable" >
+  <tr>
+	<th class="stt">STT</th>
+	<th class="ten">Họ tên</th>
+	<th>Toán</th>
+	<th>Lý</th>
+	<th>Hóa</th>
+	<th>Trung bình</th>
+  </tr>
+</table>
+<br>
+<div class="button">
+  <input type="button" id="tb" value="Tính điểm trung bình" />
+  <input type="button" id="good"  value="Xác định học sinh giỏi" />
+</div>
+<br>
+<div class="but">
+  <label for="ten">Hàng cần xóa: <input type="text" name="del" value="" id="del" /></label>
+  <input type="button" id="remov" value="Xóa hàng" /> 
+</div>
+</div>
+
+</body>
+</html>
+
